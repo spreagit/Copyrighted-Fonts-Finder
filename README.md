@@ -37,9 +37,9 @@
 -----------------------------------------------------------------
 <h2>Technical boring stuff</h2>
 
-<h2>Classes</h2>
 
-<h3><code>SearchThread</code></h3>
+
+<h3><code>Class - SearchThread</code></h3>
 <p>A subclass of <code>threading.Thread</code> that performs the search operation in a separate thread. This allows the GUI to remain responsive during the search.</p>
 
 <h4>Constructor Parameters</h4>
