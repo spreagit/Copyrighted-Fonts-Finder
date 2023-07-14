@@ -1,14 +1,18 @@
+<h1>Copyrighted Fonts Finder</h1>
+-------------------------------------------------------------------
+<h2>What it is ?</h2>
+<p>This script provides a user-friendly way to search for copyrighted fonts in a specified directory</p>
+
 <h2>Prerequisites</h2>
 <ul>
-    <li>Python and pip should be installed correctly.</li>
+    <li><a href="https://www.python.org/downloads/">Python</a> and <a href="https://pip.pypa.io/en/stable/installation/" target="_BLANK">pip</a> should be installed correctly.</li>
     <li>The following dependencies are required:
         <ul>
             <li>chardet</li>
+            Note: the script automatically attempts to install it using the <code>pip</code> module.
         </ul>
     </li>
 </ul>
-<p>If any of the dependencies are missing, the script automatically attempts to install them using the <code>pip</code> module.</p>
-
 <h2>Usage</h2>
 <ol>
     <li>Run the script using Python.</li>
@@ -17,15 +21,16 @@
     <li>Choose the search mode by selecting one of the radio buttons:
         <ul>
             <li>"Only Monotype Fonts": Searches for files that contain the string "monotype" (case-insensitive).</li>
-            <li>"Any Copyright/Trademark": Searches for files that contain either the string "copyright" or "trademark" (case-insensitive), excluding those that contain the specified exclude string ("adobe" by default).</li>
+            <li>"Any Copyright/Trademark": Searches for files that contain either the string "copyright" or "trademark" (case-insensitive), excluding those that contain the specified exclude string ("adobe" by default assuming you have an adobe license).</li>
         </ul>
     </li>
     <li>Click the "Search" button to start the search process.</li>
     <li>The progress bar will show the progress of the search, and the progress label will display the current progress, the total number of files, and the estimated remaining time.</li>
     <li>The results will be displayed in the text area below the progress bar. Each result represents a file path where a copyrighted font was found.</li>
-    <li>Scroll through the results using the scrollbar on the right.</li>
-    <li>Close the application window to exit the script.</li>
+    <li>You can scroll through the results using the scrollbar on the right.</li>
 </ol>
+-----------------------------------------------------------------
+<h2>Technical boring stuff</h2>
 
 <h2>Classes</h2>
 
@@ -74,6 +79,3 @@
     <li><code>scrollbar</code> (tk.Scrollbar): Scrollbar widget to scroll through the search results.</li>
     <li><code>credit_label</code> (tk.Label): Label widget to display the script's author.</li>
 </ul>
-
-<h2>Conclusion</h2>
-<p>This script provides a user-friendly way to search for copyrighted fonts in a specified directory. By utilizing a GUI, users can easily select the folder and choose the desired search mode. The script displays the search progress and presents the results in a readable format.</p>
