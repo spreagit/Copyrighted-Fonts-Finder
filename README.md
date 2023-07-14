@@ -18,6 +18,7 @@
     </li>
 </ul>
 <h2>Usage</h2>
+<img src="https://github.com/spreagit/Copyrighted-Fonts-Finder/assets/42819552/2a40541e-b66c-4458-9597-d838e386b0f4)">
 <ol>
     <li>Run the script using Python.</li>
     <li>The GUI window will appear.</li>
