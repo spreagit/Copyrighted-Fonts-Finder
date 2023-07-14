@@ -1,7 +1,7 @@
 <h1>Copyrighted Fonts Finder</h1>
 -------------------------------------------------------------------
 <h2>What it is ?</h2>
-<p>This script provides a user-friendly way to search for copyrighted fonts in a specified directory</p>
+<p>This script provides a user-friendly way to search for copyrighted fonts in a specified directory and in any subfolders recursively</p>
 <p>The fonts extensions compatibles are:</p>
 <p>'.ACFM', '.AMFM', '.DFONT', '.EOT', '.FNT', '.FON', '.GDF', '.GDR', '.GTF', '.MMM', '.OTF', '.PFA', '.TPF', '.TTC', '.TTF', '.WOFF'</p>
 
