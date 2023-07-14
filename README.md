@@ -56,31 +56,8 @@
 <ul>
     <li><code>run()</code>: Overrides the <code>run()</code> method of <code>threading.Thread</code> and starts the search process.</li>
     <li><code>search()</code>: Performs the search operation in the specified directory. It iterates over all files in the directory and its subdirectories, filters the files based on their extensions, checks their size, detects their encoding, and searches for the specified strings in the file content. The progress bar, progress label, and search results are updated during the search.</li>
-</ul>
-
-<h3><code>Application</code></h3>
-<p>The main application class that creates the GUI window and handles user interactions.</p>
-
-<h4>Constructor</h4>
-<p>Initializes the GUI window and sets its properties.</p>
-
-<h4>Methods</h4>
-<ul>
-    <li><code>select_folder()</code>: Opens a file dialog to select a folder and inserts the selected folder path into the entry field.</li>
+     <li><code>select_folder()</code>: Opens a file dialog to select a folder and inserts the selected folder path into the entry field.</li>
     <li><code>start_search()</code>: Retrieves the folder path and search mode from the GUI elements and starts the search thread with the specified parameters.</li>
 </ul>
 
-<h2>GUI Elements</h2>
-<ul>
-    <li><code>dropzone_label</code> (tk.Label): Label widget that displays the instruction to select a folder.</li>
-    <li><code>entry</code> (tk.Entry): Entry widget to manually enter the folder path.</li>
-    <li><code>browse_button</code> (tk.Button): Button widget to open a file dialog and select a folder.</li>
-    <li><code>radio_monotype</code> (tk.Radiobutton): Radiobutton widget for the "Only Monotype Fonts" search mode.</li>
-    <li><code>radio_copyright</code> (tk.Radiobutton): Radiobutton widget for the "Any Copyright/Trademark" search mode.</li>
-    <li><code>search_button</code> (tk.Button): Button widget to start the search process.</li>
-    <li><code>progressbar</code> (ttk.Progressbar): Horizontal progress bar widget to display the progress of the search.</li>
-    <li><code>progress_label</code> (tk.Label): Label widget to display the current progress, total number of files, and estimated remaining time.</li>
-    <li><code>results_text</code> (tk.Text): Text widget to display the search results.</li>
-    <li><code>scrollbar</code> (tk.Scrollbar): Scrollbar widget to scroll through the search results.</li>
-    <li><code>credit_label</code> (tk.Label): Label widget to display the script's author.</li>
-</ul>
+
