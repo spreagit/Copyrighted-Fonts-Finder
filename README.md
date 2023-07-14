@@ -2,6 +2,10 @@
 -------------------------------------------------------------------
 <h2>What it is ?</h2>
 <p>This script provides a user-friendly way to search for copyrighted fonts in a specified directory</p>
+<p>The fonts extensions compatibles are:</p>
+<p>'.ACFM', '.AMFM', '.DFONT', '.EOT', '.FNT', '.FON', '.GDF', '.GDR', '.GTF', '.MMM', '.OTF', '.PFA', '.TPF', '.TTC', '.TTF', '.WOFF'</p>
+
+<p>Note: since verifying a copyright is quite complex this script cannot be considered 100% infallible.</p>
 
 <h2>Prerequisites</h2>
 <ul>
@@ -21,7 +25,8 @@
     <li>Choose the search mode by selecting one of the radio buttons:
         <ul>
             <li>"Only Monotype Fonts": Searches for files that contain the string "monotype" (case-insensitive).</li>
-            <li>"Any Copyright/Trademark": Searches for files that contain either the string "copyright" or "trademark" (case-insensitive), excluding those that contain the specified exclude string ("adobe" by default assuming you have an adobe license).</li>
+            <li>"Any Copyright/Trademark": Searches for files that contain either the string "copyright" or "trademark" (case-insensitive), excluding those that contain the specified exclude string ("adobe" by default assuming you have an adobe license and "google" fonts because they are free).</li>
+            <li>Note: You could create a new branch changing the searching strings like you want changing the elements of the array inside the variable called "exclude_strings"</li>
         </ul>
     </li>
     <li>Click the "Search" button to start the search process.</li>
