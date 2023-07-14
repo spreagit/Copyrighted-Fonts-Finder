@@ -32,11 +32,11 @@ import chardet
 
 
 class SearchThread(threading.Thread):
-    def __init__(self, path, search_mode, exclude_string, progressbar, progress_text, results_text):
+    def __init__(self, path, search_mode, exclude_strings, progressbar, progress_text, results_text):
         super().__init__()
         self.path = path
         self.search_mode = search_mode
-        self.exclude_string = exclude_string
+        self.exclude_strings = exclude_strings
         self.progressbar = progressbar
         self.progress_text = progress_text
         self.results_text = results_text
@@ -90,8 +90,8 @@ class SearchThread(threading.Thread):
                                 if "monotype" in content.lower():
                                     results.append(file_path)
                             else:
-                                if ("copyright" in content.lower() or "trademark" in content.lower()) \
-                                        and self.exclude_string.lower() not in content.lower():
+                                if any((exclude_string.lower() not in content.lower() for exclude_string in self.exclude_strings)) \
+                                        and any((keyword in content.lower() for keyword in ["copyright", "trademark"])):
                                     results.append(file_path)
                     except UnicodeDecodeError:
                         pass
@@ -191,8 +191,9 @@ class Application(tk.Tk):
     def start_search(self):
         folder = self.entry.get()
         search_mode = self.mode_var.get()
+        exclude_strings = ["adobe", "google"]  # Modify this list to include additional exclude strings
 
-        self.search_thread = SearchThread(folder, search_mode, "adobe", self.progressbar,
+        self.search_thread = SearchThread(folder, search_mode, exclude_strings, self.progressbar,
                                           self.progress_text, self.results_text)
 
         self.search_thread.start()
