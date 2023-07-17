@@ -21,9 +21,6 @@ for module in required_modules:
     except ImportError:
         missing_modules.append(module)
 
-if missing_modules:
-    messagebox.showinfo("Information", f"Some missing modules have been detected: {', '.join(missing_modules)}. "
-                                        f"Proceeding with the automatic installation of missing dependencies...")
     for module in missing_modules:
         pip_main(['install', module])
 
@@ -132,7 +129,7 @@ class Application(tk.Tk):
         self.browse_button.pack(pady=10)
 
         self.mode_var = tk.StringVar()
-        self.mode_var.set("monotype")
+        self.mode_var.set("copyright")
 
         self.radio_frame = tk.Frame(self, bg="#F0F0F0")
         self.radio_frame.pack(pady=10)
