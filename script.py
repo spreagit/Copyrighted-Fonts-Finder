@@ -29,7 +29,7 @@ import chardet
 
 
 class SearchThread(threading.Thread):
-    def __init__(self, path, search_mode, exclude_strings, progressbar, progress_text, results_text):
+    def __init__(self, path, search_mode, exclude_strings, progressbar, progress_text, results_text, results_label_var):
         super().__init__()
         self.path = path
         self.search_mode = search_mode
@@ -37,15 +37,21 @@ class SearchThread(threading.Thread):
         self.progressbar = progressbar
         self.progress_text = progress_text
         self.results_text = results_text
+        self.results_label_var = results_label_var
+        self.font_copyright_found = False
+        self.num_results = 0
 
     def run(self):
         self.progressbar["value"] = 0
-        self.progress_text.set("0/0 (0.00%) - Remaining Time: 0.00 seconds")
+        self.progress_text.set("Analized fonts 0/0 (0.00%) - Remaining Time: 0.00 seconds")
         self.results_text.delete(1.0, tk.END)
+        self.results_label_var.set("Results: 0 found")
         self.search()
+        results_available = self.font_copyright_found
+        if not results_available:
+            self.results_text.insert(tk.END, "No copyrighted fonts found.")
 
     def search(self):
-        # Check if the path is a directory
         if not os.path.isdir(self.path):
             messagebox.showerror("Error", "The specified path is not a valid directory.")
             return
@@ -70,26 +76,26 @@ class SearchThread(threading.Thread):
                 if extension not in valid_extensions:
                     continue
 
-                # Check the file size
-                if os.path.getsize(file_path) <= 10 * 1024 * 1024:  # Maximum size of 10 MB
-                    # Detect file encoding
+                if os.path.getsize(file_path) <= 10 * 1024 * 1024:
                     with open(file_path, 'rb') as f:
                         raw_data = f.read()
                         encoding = chardet.detect(raw_data)['encoding']
 
                     try:
-                        # Open the file in read mode with the detected encoding
                         with open(file_path, 'r', encoding=encoding, errors='ignore') as f:
                             content = f.read()
 
-                            # Check if the string is present in the file (case-insensitive)
                             if self.search_mode == "monotype":
                                 if "monotype" in content.lower():
                                     results.append(file_path)
+                                    self.font_copyright_found = True
+                                    self.num_results += 1
                             else:
-                                if any((exclude_string.lower() not in content.lower() for exclude_string in self.exclude_strings)) \
+                                if all((exclude_string.lower() not in content.lower() for exclude_string in self.exclude_strings)) \
                                         and any((keyword in content.lower() for keyword in ["copyright", "trademark"])):
                                     results.append(file_path)
+                                    self.font_copyright_found = True
+                                    self.num_results += 1
                     except UnicodeDecodeError:
                         pass
 
@@ -99,11 +105,11 @@ class SearchThread(threading.Thread):
                 remaining_time = elapsed_time * (remaining_files / progress) if progress > 0 else 0
                 self.progressbar["value"] = (progress / total_files) * 100
                 self.progress_text.set(
-                    f"{progress}/{total_files} ({self.progressbar['value']:.2f}%) - Remaining Time: {remaining_time:.2f} seconds")
+                    f"Analized fonts {progress}/{total_files} ({self.progressbar['value']:.2f}%) - Remaining Time: {remaining_time:.2f} seconds")
                 self.results_text.delete(1.0, tk.END)
                 self.results_text.insert(tk.END, "\n".join(results))
+                self.results_label_var.set(f"Results: {self.num_results} founds")
 
-                # Update the GUI
                 self.progressbar.update_idletasks()
                 self.results_text.update_idletasks()
 
@@ -157,11 +163,13 @@ class Application(tk.Tk):
         self.progressbar.pack(pady=10)
 
         self.progress_text = tk.StringVar()
-        self.progress_text.set("0/0 (0.00%) - Remaining Time: 0.00 seconds")
+        self.progress_text.set("Analized fonts 0/0 (0.00%) - Remaining Time: 0.00 seconds")
         self.progress_label = tk.Label(self, textvariable=self.progress_text, font=("Arial", 12), bg="#F0F0F0")
         self.progress_label.pack(pady=10)
 
-        self.results_label = tk.Label(self, text="Results:", font=("Arial", 14, "bold"), bg="#F0F0F0")
+        self.results_label_var = tk.StringVar()
+        self.results_label_var.set("Results: 0 found")
+        self.results_label = tk.Label(self, textvariable=self.results_label_var, font=("Arial", 14, "bold"), bg="#F0F0F0")
         self.results_label.pack(pady=10)
 
         self.scrollbar = tk.Scrollbar(self)
@@ -173,9 +181,17 @@ class Application(tk.Tk):
 
         self.scrollbar.config(command=self.results_text.yview)
 
-        self.credit_label = tk.Label(self, text="Coded with love by Alberto Z.", font=("Arial", 10),
-                                     bg="#F0F0F0", fg="black", anchor=tk.E)
-        self.credit_label.pack(side=tk.BOTTOM, anchor=tk.E, padx=10, pady=5)
+        self.credit_frame = tk.Frame(self, bg="#F0F0F0")
+        self.credit_frame.pack(side=tk.BOTTOM, anchor=tk.E, padx=10, pady=5)
+
+        self.credit_label = tk.Label(self.credit_frame, text="Coded with", font=("Arial", 10), fg="black")
+        self.credit_label.pack(side=tk.LEFT)
+
+        self.heart_label = tk.Label(self.credit_frame, text="\u2764", font=("Arial", 10), fg="red")
+        self.heart_label.pack(side=tk.LEFT)
+
+        self.name_label = tk.Label(self.credit_frame, text="by Alberto Z.", font=("Arial", 10), fg="black")
+        self.name_label.pack(side=tk.LEFT)
 
         self.search_thread = None
 
@@ -188,10 +204,10 @@ class Application(tk.Tk):
     def start_search(self):
         folder = self.entry.get()
         search_mode = self.mode_var.get()
-        exclude_strings = ["adobe", "google"]  # Modify this list to include additional exclude strings
+        exclude_strings = ["adobe", "google", "microsoft"]  # Modify this list to include additional exclude strings
 
         self.search_thread = SearchThread(folder, search_mode, exclude_strings, self.progressbar,
-                                          self.progress_text, self.results_text)
+                                          self.progress_text, self.results_text, self.results_label_var)
 
         self.search_thread.start()
 
